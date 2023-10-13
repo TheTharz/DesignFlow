@@ -1,10 +1,46 @@
 const User = require('../models/User');
-const hashPassword = require('../helpers/authHelper');
+const {
+  hashPassword,
+  createToken,
+  comparePassword,
+} = require('../helpers/authHelper');
+const validator = require('validator');
 
 //testing purpose
 const authUser = (req, res) => {
   //i have to check is this authorization or not for now this is just a test
   res.json({ message: 'success' });
+};
+
+// for login users to the system
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    //validation
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please fill all the fields' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'User does not exists' });
+    }
+
+    const match = await comparePassword(password, user.password);
+    if (!match) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = createToken(user._id);
+
+    //sending the cookie
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
+    res
+      .status(200)
+      .json({ message: 'User logged in successfully', token, email });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
 
 //for registering new users to the app
@@ -20,6 +56,17 @@ const registerUser = async (req, res) => {
     social,
   } = req.body;
 
+  //validation
+  if (!userName || !email || !password) {
+    return res.status(400).json({ message: 'Please fill all the fields' });
+  }
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ message: 'Please enter a valid email' });
+  }
+  if (!validator.isStrongPassword(password)) {
+    return res.status(400).json({ message: 'Please enter a strong password' });
+  }
+
   const hashedPassword = await hashPassword(password);
 
   try {
@@ -28,7 +75,6 @@ const registerUser = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
-
     const newUser = new User({
       userName,
       email,
@@ -41,25 +87,74 @@ const registerUser = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+
+    res
+      .status(201)
+      .json({ message: 'User created successfully', savedUser: savedUser });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
   // tested and working fine still have to add profile picture and projects
 };
 
-const updateUserProfile = (req, res) => {
-  res.json({ message: 'success' });
+// for updating the user profile
+const updateUserProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate(id, req.body);
+
+    if (!user) {
+      return res.status(400).json({ message: 'User does not exists' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully', user });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
-const getUserProfile = (req, res) => {
-  res.json({ message: 'success' });
+
+// for getting the users data
+const getUserProfile = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({ message: 'User does not exists' });
+    }
+
+    res.status(200).json({ message: 'User fetched successfully', user });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
-const deleteUserProfile = (req, res) => {
-  res.json({ message: 'success' });
+
+// for deleting an existing user
+const deleteUserProfile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findOneAndDelete(id);
+    if (!user) {
+      return res.status(400).json({ message: 'User does not exists' });
+    }
+
+    return res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
 };
+
+// for logging out the user
 const logOutUser = (req, res) => {
-  res.json({ message: 'success' });
+  const jwtCookie = req.cookies.jwt;
+  if (!jwtCookie) {
+    return res.status(400).json({ message: 'User is not logged in' });
+  }
+  res.cookie('jwt', '', { maxAge: 0 });
+  res.status(200).json({ message: 'User logged out successfully' });
 };
+
 module.exports = {
   authUser,
   registerUser,
@@ -67,4 +162,5 @@ module.exports = {
   getUserProfile,
   deleteUserProfile,
   logOutUser,
+  loginUser,
 };
