@@ -29,3 +29,4 @@ const comparePassword = async (password, hashPassword) => {
   }
 };
 module.exports = { hashPassword, createToken, comparePassword };
+//this code is completed

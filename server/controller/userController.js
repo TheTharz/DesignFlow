@@ -116,9 +116,8 @@ const updateUserProfile = async (req, res) => {
 
 // for getting the users data
 const getUserProfile = async (req, res) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
     const user = await User.findById(id);
     if (!user) {
       return res.status(400).json({ message: 'User does not exists' });
