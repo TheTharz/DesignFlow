@@ -4,10 +4,16 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 const cookieParser = require('cookie-parser');
 const postRoutes = require('./routes/postRoutes');
-
+const cors = require('cors');
 //database
 connectDB();
 //middlewares
+app.use(
+  cors({
+    origin: 'http://localhost:3005', // Replace with the allowed origin
+    credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 //routes
