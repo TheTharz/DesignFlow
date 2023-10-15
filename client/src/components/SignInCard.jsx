@@ -1,0 +1,106 @@
+import React from 'react';
+import { useState } from 'react';
+import axios from 'axios';
+import signInValidation from '../constants/singInValidation';
+const SignInCard = () => {
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
+  const handleInput = (event) => {
+    setData({ ...data, [event.target.name]: event.target.value });
+  };
+
+  const [error, setError] = useState({});
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError({});
+    const validationErrors = signInValidation(data);
+    setError(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      const { email, password } = data;
+      try {
+        const user = await axios.post('/api/users/login', {
+          email,
+          password,
+        });
+
+        console.log(user);
+        setData({
+          userName: '',
+          password: '',
+        });
+      } catch (e) {
+        if (e.response.data.message === 'User already exists') {
+          setError({ email: 'User already exists' });
+          console.log(e.response.data.message);
+        }
+        console.log(e.response.data.message);
+      }
+    }
+  };
+
+  return (
+    <div className='bg-white h-[700px] w-[500px] rounded-[12px] m-4 p-4 shadow-lg'>
+      <p className='text-3xl font-light py-4'>Welcome Back Designer!</p>
+      <p className='text-3xl font-normal py-4'>
+        Sign in to <br />
+        <span className='text-3xl font-semibold py-2'>DesignFlow</span>
+      </p>
+
+      <div className='py-4'>
+        <form onSubmit={handleSubmit}>
+          <div className='flex flex-col gap-1 py-2'>
+            <label htmlFor='email'>Email</label>
+            <input
+              type='email'
+              name='email'
+              id='email'
+              className='border rounded px-4 py-2 border-border text-black focus:outline-none focus:border-lightgray'
+              placeholder='Enter your email'
+              onChange={handleInput}
+            />
+            {error.email && (
+              <p className='text-red-500 text-xs'>{error.email}</p>
+            )}
+          </div>
+          <div className='flex flex-col gap-1 py-2'>
+            <label htmlFor='password'>Password</label>
+            <input
+              type='password'
+              name='password'
+              id='password'
+              className='border rounded px-4 py-2 border-border text-black focus:outline-none focus:border-lightgray'
+              placeholder='Enter your password'
+              onChange={handleInput}
+            />
+            {error.password && (
+              <p className='text-red-500 text-xs'>{error.password}</p>
+            )}
+          </div>
+          <div className='flex items-center justify-center'>
+            <button
+              type='submit'
+              className='w-[300px] bg-black text-white rounded-lg cursor-pointer m-4 p-2 h-12 text-16 font-medium'
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div className='flex justify-center'>
+        <p className='text-lightText text-sm'>
+          Don't have an Account?{' '}
+          <span className='text-black font-semibold cursor-pointer'>
+            Signup Now
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SignInCard;
