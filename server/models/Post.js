@@ -20,6 +20,12 @@ const postSchema = mongoose.Schema(
         ref: 'User',
       },
     ],
+    postImage: {
+      type: String,
+    },
+    category: {
+      type: String,
+    },
   },
   {
     timestamps: true,

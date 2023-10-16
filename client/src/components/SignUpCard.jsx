@@ -2,8 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import signupValidation from '../constants/signUpValidation';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpCard = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: '',
     userName: '',
@@ -38,6 +40,8 @@ const SignUpCard = () => {
           password: '',
           confirm_password: '',
         });
+
+        navigate('/signin');
       } catch (e) {
         if (e.response.data.message === 'User already exists') {
           setError({ email: 'User already exists' });
@@ -115,7 +119,7 @@ const SignUpCard = () => {
           <div className='flex items-center justify-center'>
             <button
               type='submit'
-              className='w-[300px] bg-black text-white rounded-lg cursor-pointer m-4 p-2 h-12 text-16 font-medium'
+              className='w-[300px] bg-black text-white rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium'
             >
               Sign Up
             </button>
@@ -126,7 +130,12 @@ const SignUpCard = () => {
       <div className='flex justify-center'>
         <p className='text-lightText text-sm'>
           Already have an Account?{' '}
-          <span className='text-black font-semibold cursor-pointer'>
+          <span
+            className='text-black font-semibold cursor-pointer'
+            onClick={() => {
+              navigate('/signin');
+            }}
+          >
             Register
           </span>
         </p>

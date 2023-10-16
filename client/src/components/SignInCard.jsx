@@ -2,7 +2,9 @@ import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import signInValidation from '../constants/singInValidation';
+import { useNavigate } from 'react-router-dom';
 const SignInCard = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -32,10 +34,17 @@ const SignInCard = () => {
           userName: '',
           password: '',
         });
+
+        navigate('/');
       } catch (e) {
-        if (e.response.data.message === 'User already exists') {
-          setError({ email: 'User already exists' });
+        console.log(e.response.data.message);
+        if (e.response.data.message === 'Invalid credentials') {
+          setError({ password: 'Password and email does not matching' });
           console.log(e.response.data.message);
+          setData({
+            ...data,
+            password: '', // Clear the password field on error
+          });
         }
         console.log(e.response.data.message);
       }
@@ -94,7 +103,12 @@ const SignInCard = () => {
       <div className='flex justify-center'>
         <p className='text-lightText text-sm'>
           Don't have an Account?{' '}
-          <span className='text-black font-semibold cursor-pointer'>
+          <span
+            className='text-black font-semibold cursor-pointer'
+            onClick={() => {
+              navigate('/signup');
+            }}
+          >
             Signup Now
           </span>
         </p>

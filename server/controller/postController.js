@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 // for creating a new post
 const createPost = async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, postImage, category } = req.body;
   try {
     //validation
     if (!title || !description) {
@@ -13,6 +13,8 @@ const createPost = async (req, res) => {
       title,
       description,
       owner: req.userId,
+      postImage,
+      category,
     });
 
     res.status(201).json({ message: 'Post created successfully', post });

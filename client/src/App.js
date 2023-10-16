@@ -6,6 +6,9 @@ import Error from './pages/Error';
 import Home from './pages/Homepage';
 import axios from 'axios';
 
+//testing
+import UploadCard from './components/PostUploadCard';
+
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
 
@@ -17,6 +20,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/signin' element={<Signin />} />
         <Route path='*' element={<Error />} />
+        <Route path='/upload' element={<UploadCard />} />
       </Routes>
     </Router>
   );
