@@ -1,8 +1,8 @@
 import React from 'react';
 import HeroImage from '../assets/heroImage.jpg';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 const Hero = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   return (
     <div className='flex flex-row gap-4 m-2 p-2 justify-between font-Poppins items-center'>
       <div className='ml-10'>
