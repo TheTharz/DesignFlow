@@ -8,6 +8,7 @@ import axios from 'axios';
 
 //testing
 import UploadCard from './components/PostUploadCard';
+import PostDetails from './components/PostDetails';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
@@ -21,6 +22,7 @@ function App() {
         <Route path='/signin' element={<Signin />} />
         <Route path='*' element={<Error />} />
         <Route path='/upload' element={<UploadCard />} />
+        <Route path='/postdetails' element={<PostDetails />} />
       </Routes>
     </Router>
   );

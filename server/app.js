@@ -5,6 +5,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const postRoutes = require('./routes/postRoutes');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 //database
 connectDB();
 //middlewares
@@ -14,6 +15,8 @@ app.use(
     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
   })
 );
+app.use(bodyParser.json({ limit: '10mb' }));
+
 app.use(express.json());
 app.use(cookieParser());
 //routes
