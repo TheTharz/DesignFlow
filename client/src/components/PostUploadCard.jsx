@@ -3,6 +3,7 @@ import ConvertToBase64 from '../constants/convertToBase64';
 import { useState } from 'react';
 import axios from 'axios';
 import postValidation from '../constants/postValidation';
+import uploadImage from '../assets/upload.png';
 const PostUploadCard = () => {
   const [post, setPost] = useState({
     title: '',
@@ -40,6 +41,9 @@ const PostUploadCard = () => {
         });
       } catch (e) {
         console.log(e.response.data.message);
+        if (e.response.data.message === 'You are not logged in') {
+          alert(e.response.data.message);
+        }
       }
     }
   };
@@ -52,22 +56,30 @@ const PostUploadCard = () => {
     setPost({ ...post, [e.target.name]: e.target.value });
   };
   return (
-    <div>
-      <h1>
-        Share Your <span>Creativity</span>
+    <div className='w-[500px] h-[700px] bg-white rounded-[20px]'>
+      <h1 className='font-bold text-4xl text-center p-2 m-2'>
+        Share Your <span className='text-yellow-400'>Creativity</span>
       </h1>
       <div>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor='postImage_uploaded'>
-              <img src={post.postImage || 'postimage'} alt='post' />
-            </label>
+          <div className='w-full h-[300px] border-2 border-dashed m-2 rounded-md bg-gray-300 flex flex-col items-center justify-center'>
+            {post.postImage && post.postImage !== 'uploadImage' ? (
+              <label htmlFor='postImage_uploaded'>
+                <img src={post.postImage} alt='post' class='w-full h-full' />
+              </label>
+            ) : (
+              <img src={uploadImage} alt='post' class='w-8 h-8' />
+            )}
             <input
               type='file'
               name='postImage'
               id='postImage'
               label='postImage'
-              className='border rounded px-4 py-2 border-border text-black focus:outline-none focus:border-lightgray'
+              className={`border rounded px-4 py-2 border-border text-black focus:outline-none focus:border-lightgray ${
+                post.postImage && post.postImage !== 'uploadImage'
+                  ? 'hidden'
+                  : ''
+              }`}
               placeholder='Add Image'
               accept='.jpg, .jpeg, .png'
               onChange={(e) => handleFileUpload(e)}
