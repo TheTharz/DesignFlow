@@ -9,6 +9,7 @@ const {
   getPostById,
   likePost,
   unlikePost,
+  searchPosts,
 } = require('../controller/postController');
 const auth = require('../middleware/authMiddleware');
 
@@ -50,6 +51,9 @@ router.route('/like/:id').put(likePost);
 
 // http://localhost:3000/api/post/unlike/:id
 router.route('/unlike/:id').put(unlikePost);
+
+// http://localhost:3000/api/post/search?keywords=keyword1+keyword2
+router.route('/search/post/search').get(searchPosts);
 
 //some routes are giving errors
 

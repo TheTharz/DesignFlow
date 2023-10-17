@@ -9,6 +9,7 @@ import EditProfilePage from './pages/EditProfilePage';
 import axios from 'axios';
 import { UserContextProvider } from './context/userContext';
 import EditPostPage from './components/EditPostPage';
+import SearchResultPage from './pages/SearchResultPage';
 //testing
 import UploadCard from './components/PostUploadCard';
 import PostDetails from './components/PostDetails';
@@ -32,6 +33,7 @@ function App() {
           <Route path='/myprofile/' element={<ProfilePage />} />
           <Route path='/editprofile' element={<EditProfilePage />} />
           <Route path='/editpost/:id' element={<EditPostPage />} />
+          <Route path='/search/:search' element={<SearchResultPage />} />
         </Routes>
       </Router>
     </UserContextProvider>

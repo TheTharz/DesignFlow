@@ -2,7 +2,7 @@ import React from 'react';
 import logoImageOnly from '../assets/logoImageOnly.png';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
 import axios from 'axios';
 const NavBar = () => {
@@ -12,6 +12,10 @@ const NavBar = () => {
     axios.post('/api/users/logout');
     setUser(null);
     navigate('/');
+  };
+  const [search, setSearch] = useState('');
+  const handleSearch = (e) => {
+    navigate('/search/' + search);
   };
   return (
     <div className='font-Poppins flex flex-row m-2 justify-between items-center'>
@@ -31,6 +35,14 @@ const NavBar = () => {
           className='bg-transparent p-2 focus:outline-none'
           type='text'
           placeholder='Search'
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
         />
       </div>
       {user ? (

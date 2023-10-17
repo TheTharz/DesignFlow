@@ -150,6 +150,24 @@ const unlikePost = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+const searchPosts = async (req, res) => {
+  const { keywords } = req.query;
+  console.log(keywords);
+  try {
+    const posts = await Post.find({
+      $or: [
+        { title: { $regex: keywords, $options: 'i' } },
+        { description: { $regex: keywords, $options: 'i' } },
+      ],
+    });
+
+    res.status(200).json({ message: 'Search results', results: posts });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createPost,
   updatePost,
@@ -159,4 +177,5 @@ module.exports = {
   getPostById,
   likePost,
   unlikePost,
+  searchPosts,
 };
