@@ -113,6 +113,43 @@ const getPostById = async (req, res) => {
   }
 };
 
+// like the post
+const likePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findByIdAndUpdate(
+      id,
+      {
+        $push: { likes: req.userId },
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json({ message: 'Post liked successfully', post });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+// unlike the post
+const unlikePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findByIdAndUpdate(
+      id,
+      {
+        $pull: { likes: req.userId },
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json({ message: 'Post unliked successfully', post });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 module.exports = {
   createPost,
   updatePost,
@@ -120,4 +157,6 @@ module.exports = {
   getAllPost,
   getPostByUserId,
   getPostById,
+  likePost,
+  unlikePost,
 };

@@ -7,6 +7,8 @@ const {
   getAllPost,
   getPostByUserId,
   getPostById,
+  likePost,
+  unlikePost,
 } = require('../controller/postController');
 const auth = require('../middleware/authMiddleware');
 
@@ -42,4 +44,10 @@ router.route('/:id').get(getPostByUserId);
 
 // http://localhost:3000/api/post/getbyid/:id
 router.route('/getbyid/:id').get(getPostById);
+
+// http://localhost:3000/api/post/like/:id
+router.route('/like/:id').put(likePost);
+
+// http://localhost:3000/api/post/unlike/:id
+router.route('/unlike/:id').put(unlikePost);
 module.exports = router;

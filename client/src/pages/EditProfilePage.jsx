@@ -18,6 +18,7 @@ import ConvertToBase64 from '../constants/convertToBase64';
 const EditProfilePage = () => {
   const { user, setUser } = useContext(UserContext);
   const [post, setPost] = useState([]);
+
   useEffect(() => {
     const getPost = async () => {
       //console.log(user._id);

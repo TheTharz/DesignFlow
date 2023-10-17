@@ -94,6 +94,7 @@ const PostDetails = () => {
           width={80}
           height={80}
           className='rounded-[40px]'
+          src={user.profilePicture}
         />
         <div>
           <p className='font-medium'>{post.title}</p>
