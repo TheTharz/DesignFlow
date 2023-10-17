@@ -4,9 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
+import axios from 'axios';
 const NavBar = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const handleLogOut = () => {
+    axios.post('/api/users/logout');
+    setUser(null);
+    navigate('/');
+  };
   return (
     <div className='font-Poppins flex flex-row m-2 justify-between items-center'>
       <div
@@ -28,7 +34,7 @@ const NavBar = () => {
         />
       </div>
       {user ? (
-        <div className='flex flex-row'>
+        <div className='flex flex-row items-center'>
           <button
             className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[200px]'
             onClick={() => {
@@ -45,6 +51,14 @@ const NavBar = () => {
           >
             {user.userName}
           </p>
+          <button
+            className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[100px]'
+            onClick={(e) => {
+              handleLogOut(e);
+            }}
+          >
+            Log Out
+          </button>
         </div>
       ) : (
         <div>

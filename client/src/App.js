@@ -26,8 +26,9 @@ function App() {
           <Route path='/signin' element={<Signin />} />
           <Route path='*' element={<Error />} />
           <Route path='/upload' element={<UploadCard />} />
-          <Route path='/postdetails' element={<PostDetails />} />
-          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/postdetails/:id' element={<PostDetails />} />
+          <Route path='/profile/:id' element={<ProfilePage />} />
+          <Route path='/profile/' element={<ProfilePage />} />
           <Route path='/editprofile' element={<EditProfilePage />} />
           <Route path='/editpost/:id' element={<EditPostPage />} />
         </Routes>

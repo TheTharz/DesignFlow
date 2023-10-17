@@ -5,12 +5,20 @@ export const UserContext = createContext({});
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/api/users/profiledata/my');
+        setUser(response.data.user);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    // Fetch user data only if user is null
     if (!user) {
-      axios.get('/api/users/profiledata/my').then((data) => {
-        setUser(data.data.user);
-      });
+      fetchUserData();
     }
-  }, []);
+  }, [user]);
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

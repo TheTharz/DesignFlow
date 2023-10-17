@@ -20,10 +20,22 @@ const userSchema = mongoose.Schema(
     tagline: String,
     contact: String,
     social: {
-      facebook: String,
-      twitter: String,
-      instagram: String,
-      linkedin: String,
+      facebook: {
+        type: String,
+        default: 'https://www.facebook.com/',
+      },
+      twitter: {
+        type: String,
+        default: 'https://www.twitter.com/',
+      },
+      instagram: {
+        type: String,
+        default: 'https://www.instagram.com/',
+      },
+      linkedin: {
+        type: String,
+        default: 'https://www.linkedin.com/',
+      },
     },
     profilePicture: String,
     website: String,

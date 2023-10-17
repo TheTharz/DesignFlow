@@ -4,7 +4,9 @@ import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const Homepage = () => {
+  const navigate = useNavigate();
   const [post, setPost] = useState([]);
   useEffect(() => {
     axios
@@ -19,6 +21,7 @@ const Homepage = () => {
   }, []);
   const viewDetails = (postItem) => {
     console.log(postItem);
+    navigate('/postdetails/' + postItem._id);
   };
   return (
     <div className='font-Poppins'>
