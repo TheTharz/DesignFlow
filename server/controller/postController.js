@@ -82,4 +82,25 @@ const getAllPost = async (req, res) => {
     return res.status(400).json({ message: err.message });
   }
 };
-module.exports = { createPost, updatePost, deletePost, getAllPost };
+
+//get post by particular id of user
+const getPostByUserId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const posts = await Post.find({ owner: id });
+    if (!posts) {
+      return res.status(404).json({ message: 'No post found' });
+    }
+    res.status(200).json({ message: 'All Posts', posts });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+};
+module.exports = {
+  createPost,
+  updatePost,
+  deletePost,
+  getAllPost,
+  getPostByUserId,
+};

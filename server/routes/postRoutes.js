@@ -5,6 +5,7 @@ const {
   updatePost,
   deletePost,
   getAllPost,
+  getPostByUserId,
 } = require('../controller/postController');
 const auth = require('../middleware/authMiddleware');
 
@@ -34,4 +35,7 @@ router.route('/:id').delete(deletePost);
 
 // http://localhost:3000/api/post/allposts
 router.route('/allposts').get(getAllPost);
+
+// http://localhost:3000/api/post/:id
+router.route('/:id').get(getPostByUserId);
 module.exports = router;

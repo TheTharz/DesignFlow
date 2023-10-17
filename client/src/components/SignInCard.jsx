@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import signInValidation from '../constants/singInValidation';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
+
 const SignInCard = () => {
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: '',
@@ -34,7 +37,7 @@ const SignInCard = () => {
           userName: '',
           password: '',
         });
-
+        setUser(user.data.user);
         navigate('/');
       } catch (e) {
         console.log(e.response.data.message);

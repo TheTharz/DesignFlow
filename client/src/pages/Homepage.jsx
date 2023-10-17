@@ -4,7 +4,6 @@ import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 const Homepage = () => {
   const [post, setPost] = useState([]);
   useEffect(() => {

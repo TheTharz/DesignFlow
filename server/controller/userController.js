@@ -5,7 +5,7 @@ const {
   comparePassword,
 } = require('../helpers/authHelper');
 const validator = require('validator');
-
+const jwt = require('jsonwebtoken');
 //testing purpose
 const authUser = (req, res) => {
   //i have to check is this authorization or not for now this is just a test
@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
     res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
     res
       .status(200)
-      .json({ message: 'User logged in successfully', token, email });
+      .json({ message: 'User logged in successfully', token, email, user });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -154,6 +154,22 @@ const logOutUser = (req, res) => {
   res.status(200).json({ message: 'User logged out successfully' });
 };
 
+// for getting the profile of the logged in user
+const getProfile = async (req, res) => {
+  const jwtCookie = req.cookies.jwt;
+  if (!jwtCookie) {
+    return res.json(null);
+  }
+
+  const decoded = jwt.verify(jwtCookie, process.env.SECRET);
+  const { _id } = decoded;
+  const user = await User.findById(_id);
+  if (!user) {
+    return res.json(null);
+  }
+  res.status(200).json({ message: 'User fetched successfully', user });
+};
+
 module.exports = {
   authUser,
   registerUser,
@@ -162,4 +178,5 @@ module.exports = {
   deleteUserProfile,
   logOutUser,
   loginUser,
+  getProfile,
 };

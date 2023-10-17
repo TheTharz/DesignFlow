@@ -8,6 +8,7 @@ const {
   getUserProfile,
   logOutUser,
   loginUser,
+  getProfile,
 } = require('../controller/userController.js');
 
 // http://localhost:3000/api/users/auth
@@ -30,4 +31,8 @@ router.route('/:id').delete(deleteUserProfile);
 
 // http://localhost:3000/api/users/logout
 router.route('/logout').post(logOutUser);
+
+// http://localhost:3000/api/users/profile/my
+router.route('/profiledata/my').get(getProfile);
+
 module.exports = router;
