@@ -66,6 +66,7 @@ const ProfilePage = () => {
               className='p-2 m-2 cursor-pointer'
               onClick={() => {
                 console.log(postItem);
+                navigate('/editpost/' + postItem._id);
               }}
             >
               {postItem.postImage && (

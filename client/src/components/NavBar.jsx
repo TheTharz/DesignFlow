@@ -32,7 +32,7 @@ const NavBar = () => {
           <button
             className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[200px]'
             onClick={() => {
-              navigate('/signin');
+              navigate('/upload');
             }}
           >
             Share Your Work +

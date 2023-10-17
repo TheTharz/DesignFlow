@@ -4,7 +4,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import postValidation from '../constants/postValidation';
 import uploadImage from '../assets/upload.png';
+import { useNavigate } from 'react-router-dom';
 const PostUploadCard = () => {
+  const navigate = useNavigate();
   const [post, setPost] = useState({
     title: '',
     description: '',
@@ -39,6 +41,7 @@ const PostUploadCard = () => {
           postImage: '',
           category: '',
         });
+        navigate('/profile');
       } catch (e) {
         console.log(e.response.data.message);
         if (e.response.data.message === 'You are not logged in') {
