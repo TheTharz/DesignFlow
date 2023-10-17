@@ -63,45 +63,79 @@ const EditProfilePage = () => {
     <div>
       <NavBar />
       <div>
-        <div>
-          <p>Hi I Am,</p>
-          <input type='text' placeholder={user.userName} id='userName' />
-          <input
-            type='text'
-            placeholder={
-              user.designation ? user.designation : 'Your designation'
-            }
-            id='designation'
-            onChange={(e) => handleInput(e)}
-          />
-          <input
-            type='text'
-            placeholder={
-              user.description ? user.description : 'Your description'
-            }
-            id='description'
-            onChange={(e) => handleInput(e)}
-          />
-        </div>
-        <div>
-          <div>
-            <p>Want To Contact Me?</p>
-            <div>
-              <LuPhoneCall size={20} />
-              <input
-                type='text'
-                placeholder={user.contact ? user.contact : 'Your phone number'}
-                id='contact'
-                onChange={(e) => handleInput(e)}
+        <div className='flex flex-row justify-evenly items-center'>
+          <div className='flex flex-col items-left gap-3'>
+            <p className='text-3xl'>Hi I Am,</p>
+            <input
+              type='text'
+              placeholder={user.userName}
+              id='userName'
+              className='text-4xl font-medium'
+            />
+            <input
+              type='text'
+              placeholder={
+                user.designation ? user.designation : 'Your designation'
+              }
+              id='designation'
+              onChange={(e) => handleInput(e)}
+              className='font-bold text-4xl pb-3'
+            />
+            <textarea
+              type='text'
+              placeholder={
+                user.description ? user.description : 'Your description'
+              }
+              id='description'
+              onChange={(e) => handleInput(e)}
+              className='w-[400px] h-[200px] resize-none text-lg'
+            />
+          </div>
+          <div className='flex flex-col justify-center items-center gap-4'>
+            {edited.profilePicture ? (
+              <img
+                src={edited.profilePicture}
+                alt='user'
+                id='profilePicture'
+                width={250}
+                height={250}
+                className='rounded-full w-[250px] h-[250px] object-cover outline-black outline-3'
               />
-            </div>
-            <div>
-              <CiMail size={20} />
-              <p>{user.email}</p>
+            ) : (
+              <CgProfile size={150} id='profilePicture' />
+            )}
+            <input
+              type='file'
+              name='profilePicture'
+              id='profilePicture'
+              onChange={(e) => changeProfilePicture(e)}
+            />
+          </div>
+        </div>
+        <div className='flex flex-row justify-evenly mb-8 p-2 gap-4'>
+          <div className='flex flex-col gap-4'>
+            <p className='text-xl font-medium'>Want To Contact Me?</p>
+            <div className='border-t border-black w-[250px]'></div>
+            <div className='flex flex-col gap-2 items-center'>
+              <div className='flex flex-row gap-2 items-center'>
+                <LuPhoneCall size={20} />
+                <input
+                  type='text'
+                  placeholder={
+                    user.contact ? user.contact : 'Your phone number'
+                  }
+                  id='contact'
+                  onChange={(e) => handleInput(e)}
+                />
+              </div>
+              <div className='flex flex-row gap-2 items-center'>
+                <CiMail size={20} />
+                <p>{user.email}</p>
+              </div>
             </div>
           </div>
-          <div className='flex flex-row gap-3 p-4'>
-            <div>
+          <div className='flex flex-col gap-3 p-4'>
+            <div className='flex flex-row gap-2'>
               <SlSocialDribbble size={35} />
               <input
                 type='text'
@@ -111,7 +145,7 @@ const EditProfilePage = () => {
               />
             </div>
 
-            <div>
+            <div className='flex flex-row gap-2 '>
               <TiSocialTwitter size={35} />
               <input
                 type='text'
@@ -128,7 +162,7 @@ const EditProfilePage = () => {
                 }}
               />
             </div>
-            <div>
+            <div className='flex flex-row gap-2 items-center'>
               <TiSocialFacebook size={35} />
               <input
                 type='text'
@@ -145,7 +179,7 @@ const EditProfilePage = () => {
                 }}
               />
             </div>
-            <div>
+            <div className='flex flex-row gap-2 items-center'>
               <TiSocialInstagram size={35} />
               <input
                 type='text'
@@ -162,7 +196,7 @@ const EditProfilePage = () => {
                 }}
               />
             </div>
-            <div>
+            <div className='flex flex-row gap-2 items-center'>
               <TiSocialPinterest size={35} />
               <input
                 type='text'
@@ -181,20 +215,8 @@ const EditProfilePage = () => {
             </div>
           </div>
         </div>
-        <div>
-          {edited.profilePicture ? (
-            <img src={edited.profilePicture} alt='user' id='profilePicture' />
-          ) : (
-            <CgProfile size={150} id='profilePicture' />
-          )}
-          <input
-            type='file'
-            name='profilePicture'
-            id='profilePicture'
-            onChange={(e) => changeProfilePicture(e)}
-          />
-        </div>
-        <div>
+
+        <div className='flex flex-row justify-center'>
           <button
             className='cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
 border-blue-600
