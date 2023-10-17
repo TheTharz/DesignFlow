@@ -87,7 +87,7 @@ const PostDetails = () => {
   };
 
   return (
-    <div className='w-[500px] h-[700px] rounded-3xl p-5 font-Poppins'>
+    <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg'>
       <div className='flex flex-row justify-between items-center'>
         <img
           alt='profilepicture'

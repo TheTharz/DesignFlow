@@ -34,23 +34,26 @@ const NavBar = () => {
         />
       </div>
       {user ? (
-        <div className='flex flex-row items-center'>
+        <div className='flex flex-row items-center gap-5'>
           <button
-            className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[200px]'
+            className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-[12px] font-medium w-[150px] border-2 border-black'
             onClick={() => {
               navigate('/upload');
             }}
           >
             Share Your Work +
           </button>
-          <p
-            className='m-2 p-2'
+
+          <img
+            src={user.profilePicture}
+            alt='profile'
+            className='rounded-[25px] cursor-pointer'
+            width={50}
+            height={50}
             onClick={() => {
               navigate('/profile');
             }}
-          >
-            {user.userName}
-          </p>
+          />
           <button
             className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[100px]'
             onClick={(e) => {
