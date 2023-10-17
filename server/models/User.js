@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema(
       linkedin: String,
     },
     profilePicture: String,
+    website: String,
   },
   {
     timestamps: true,

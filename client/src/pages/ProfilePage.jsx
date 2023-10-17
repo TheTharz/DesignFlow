@@ -13,7 +13,9 @@ import {
   TiSocialInstagram,
   TiSocialPinterest,
 } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [post, setPost] = useState([]);
   useEffect(() => {
@@ -104,6 +106,15 @@ const ProfilePage = () => {
         </div>
       </div>
       <Footer />
+
+      <button
+        type='button'
+        onClick={() => {
+          navigate('/editprofile');
+        }}
+      >
+        testing the update
+      </button>
     </div>
   );
 };

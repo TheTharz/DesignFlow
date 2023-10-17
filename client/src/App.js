@@ -5,6 +5,7 @@ import Signin from './pages/Signin';
 import Error from './pages/Error';
 import Home from './pages/Homepage';
 import ProfilePage from './pages/ProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
 import axios from 'axios';
 import { UserContextProvider } from './context/userContext';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='/upload' element={<UploadCard />} />
           <Route path='/postdetails' element={<PostDetails />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/editprofile' element={<EditProfilePage />} />
         </Routes>
       </Router>
     </UserContextProvider>
