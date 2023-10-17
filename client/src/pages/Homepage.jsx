@@ -7,7 +7,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import PostDetails from '../components/PostDetails';
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
+
 const Homepage = () => {
+  const { user } = useContext(UserContext);
   const [selectedPost, setSelectedPost] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -25,8 +29,12 @@ const Homepage = () => {
       });
   }, []);
   const viewDetails = (postItem) => {
-    console.log(postItem);
-    setSelectedPost(postItem._id);
+    if (user) {
+      console.log(postItem);
+      setSelectedPost(postItem._id);
+    } else {
+      navigate('/signin');
+    }
   };
 
   const handleLike = async (postItem) => {
@@ -35,6 +43,9 @@ const Homepage = () => {
       console.log(res);
     } catch (error) {
       console.log(error);
+      if (error.code === 401) {
+        navigate('/signin');
+      }
     }
   };
   const handleUnlike = async (postItem) => {
@@ -43,6 +54,9 @@ const Homepage = () => {
       console.log(res);
     } catch (error) {
       console.log(error);
+      if (error.code === 401) {
+        navigate('/signin');
+      }
     }
   };
 

@@ -13,11 +13,13 @@ import {
   TiSocialInstagram,
 } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
+import EditPostPage from '../components/EditPostPage';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [post, setPost] = useState([]);
+  const [selectedPost, setSelectedPost] = useState('');
   useEffect(() => {
     const getPost = async () => {
       //console.log(user._id);
@@ -76,7 +78,8 @@ const ProfilePage = () => {
               className='p-4 cursor-pointer'
               onClick={() => {
                 console.log(postItem);
-                navigate('/editpost/' + postItem._id);
+                setSelectedPost(postItem);
+                //navigate('/editpost/' + postItem._id);
               }}
             >
               {postItem.postImage && (
@@ -172,6 +175,7 @@ const ProfilePage = () => {
           Edit My Profile
         </button>
       </div>
+      <div>{selectedPost && <EditPostPage postId={selectedPost} />}</div>
       <Footer />
     </div>
   );

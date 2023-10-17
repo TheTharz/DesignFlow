@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import PostDetails from '../components/PostDetails';
 const SearchResultPage = () => {
+  const navigate = useNavigate();
   const { search } = useParams();
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,9 @@ const SearchResultPage = () => {
       console.log(res);
     } catch (error) {
       console.log(error);
+      if (error.code === 401) {
+        navigate('/signin');
+      }
     }
   };
   const handleUnlike = async (postItem) => {
@@ -48,6 +52,9 @@ const SearchResultPage = () => {
       console.log(res);
     } catch (error) {
       console.log(error);
+      if (error.code === 401) {
+        navigate('/signin');
+      }
     }
   };
   return (

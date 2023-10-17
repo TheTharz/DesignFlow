@@ -103,7 +103,7 @@ const PostDetails = (postId) => {
           size={20}
           onClick={() => {
             setIsCardVisible(false);
-            navigate('/');
+            //navigate('/');
           }}
           className='cursor-pointer'
         />

@@ -5,18 +5,29 @@ import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import ConvertToBase64 from '../constants/convertToBase64';
 import { useNavigate } from 'react-router-dom';
-const EditPostPage = () => {
+import { AiOutlineClose } from 'react-icons/ai';
+const EditPostPage = (postId) => {
+  console.log(postId);
+  const id = postId.postId._id;
+  console.log(id);
+  console.log(id);
+  const [isCardVisible, setIsCardVisible] = useState(true);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { id } = useParams();
+
   const [post, setPost] = useState({});
 
   useEffect(() => {
     console.log(id);
     const getPost = async () => {
-      const res = await axios.get('/api/posts/getbyid/' + id);
-      console.log(res);
-      setPost(res.data.post);
+      try {
+        const res = await axios.get('/api/posts/getbyid/' + id);
+        console.log(res);
+        setPost(res.data.post);
+        setIsCardVisible(true);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getPost();
   }, [id]);
@@ -37,10 +48,13 @@ const EditPostPage = () => {
     try {
       const res = await axios.put('/api/posts/' + id, post);
       console.log(res);
-      navigate('/profile');
+      setIsCardVisible(false);
       //setPost(res.data.user);
     } catch (e) {
       console.log(e);
+      if (e.response.status === 401) {
+        navigate('/signin');
+      }
     }
   };
 
@@ -50,24 +64,36 @@ const EditPostPage = () => {
     try {
       const res = await axios.delete('/api/posts/' + id);
       console.log(res);
-      navigate('/profile');
+      setIsCardVisible(false);
       //setPost(res.data.user);
     } catch (e) {
       console.log(e);
+      if (e.response.status === 401) {
+        navigate('/signin');
+      }
     }
   };
   console.log(post);
   return (
-    <div className='w-[500px] h-[700px] rounded-3xl p-5 font-Poppins'>
-      <div className='flex flex-row justify-between items-center'>
-        <h1>Enhancing Your Creativity</h1>
+    <div
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg z-50 ${
+        isCardVisible ? 'block' : 'hidden'
+      }`}
+    >
+      <div className='flex flex-row justify-between items-center m-2'>
+        <h1 className='font-medium text-xl p-2'>
+          Enhancing Your <span className='text-yellow-400'>Creativity</span>
+        </h1>
       </div>
       <div>
         <div>
           <img
             src={post.postImage ? post.postImage : null}
             alt='post'
-            className='bg-cover'
+            className='bg-cover p-2'
+            width={500}
+            height={300}
+            style={{ maxWidth: '500px', maxHeight: '300px' }}
           />
           <input
             type='file'
@@ -78,8 +104,8 @@ const EditPostPage = () => {
         </div>
 
         <div className='flex flex-row justify-between'>
-          <div>
-            <div>
+          <div className='flex flex-col gap-3 p-2'>
+            <div className='flex flex-row gap-3'>
               <label htmlFor='title'>Title</label>
               <input
                 type='text'
@@ -88,18 +114,19 @@ const EditPostPage = () => {
                 onChange={(e) => handleInput(e)}
               />
             </div>
-            <div>
+            <div className='flex flex-row gap-3 items-center'>
               <label htmlFor='description'>Description</label>
-              <input
+              <textarea
                 type='text'
                 placeholder={
                   post.description ? post.description : 'Your description'
                 }
                 id='description'
                 onChange={(e) => handleInput(e)}
+                className='h-[125px] w-[400px]'
               />
             </div>
-            <div>
+            <div className='flex flex-row items-center gap-3'>
               <label htmlFor='tags'>Tags</label>
               <input
                 type='text'
@@ -108,9 +135,9 @@ const EditPostPage = () => {
                 onChange={(e) => handleInput(e)}
               />
             </div>
-            <div>
+            <div className='flex flex-row items-center gap-3'>
               <label htmlFor='category'>Category</label>
-              <select value={post.category} onChange={(e) => handleInput(e)}>
+              <select onChange={(e) => handleInput(e)}>
                 <option>Art</option>
                 <option>Design</option>
                 <option>Illustration</option>
@@ -138,7 +165,7 @@ const EditPostPage = () => {
         <button
           type='button'
           className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-16 font-medium w-[100px] border-2 border-black'
-          onClick={() => navigate('/profile')}
+          onClick={() => setIsCardVisible(false)}
         >
           Discard
         </button>

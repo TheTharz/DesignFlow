@@ -15,15 +15,21 @@ import {
 } from 'react-icons/ti';
 import { CgProfile } from 'react-icons/cg';
 import ConvertToBase64 from '../constants/convertToBase64';
+import { useNavigate } from 'react-router-dom';
 const EditProfilePage = () => {
+  const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   const [post, setPost] = useState([]);
 
   useEffect(() => {
     const getPost = async () => {
       //console.log(user._id);
-      const res = await axios.get('api/posts/' + user._id);
-      setPost(res.data.posts);
+      if (user) {
+        const res = await axios.get('api/posts/' + user._id);
+        setPost(res.data.posts);
+      } else {
+        navigate('/signin');
+      }
     };
     getPost();
   }, [user._id]);
@@ -57,6 +63,9 @@ const EditProfilePage = () => {
       setUser(res.data.user);
     } catch (e) {
       console.log(e);
+      if (e.code === 401) {
+        navigate('/signin');
+      }
     }
   };
   return (

@@ -15,12 +15,13 @@ import {
 } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import PostDetails from '../components/PostDetails';
 const OtherProfilePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState([]);
   const [user, setUser] = useState({});
-
+  const [selectedPost, setSelectedPost] = useState('');
   useEffect(() => {
     try {
       const getUser = async () => {
@@ -33,6 +34,9 @@ const OtherProfilePage = () => {
           const res = await axios.get('api/posts/' + id);
           setPost(res.data.posts);
         } catch (error) {
+          if (error.response.status === 401 || user) {
+            navigate('/signin');
+          }
           if (error.response && error.response.status === 404) {
             console.error('No post found');
           } else {
@@ -96,7 +100,7 @@ const OtherProfilePage = () => {
               className='p-4 cursor-pointer'
               onClick={() => {
                 console.log(postItem);
-                navigate('/editpost/' + postItem._id);
+                setSelectedPost(postItem);
               }}
             >
               {postItem.postImage && (
@@ -182,6 +186,7 @@ const OtherProfilePage = () => {
           </div>
         </div>
       </div>
+      {selectedPost && <PostDetails postId={selectedPost} />}
       <Footer />
     </div>
   );
