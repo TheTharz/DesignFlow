@@ -1,8 +1,8 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../context/userContext';
+import { useState, useEffect } from 'react';
+
 import axios from 'axios';
 import { LuPhoneCall } from 'react-icons/lu';
 import { CiMail } from 'react-icons/ci';
@@ -11,21 +11,41 @@ import {
   TiSocialTwitter,
   TiSocialFacebook,
   TiSocialInstagram,
+  TiSocialPinterest,
 } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
-
-const ProfilePage = () => {
+import { useParams } from 'react-router-dom';
+const OtherProfilePage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
   const [post, setPost] = useState([]);
+  const [user, setUser] = useState({});
+
   useEffect(() => {
-    const getPost = async () => {
-      //console.log(user._id);
-      const res = await axios.get('api/posts/' + user._id);
-      setPost(res.data.posts);
-    };
-    getPost();
-  }, [user._id]);
+    try {
+      const getUser = async () => {
+        const res = await axios.get('api/users/' + id);
+        setUser(res.data.user);
+        console.log(res.data.user);
+      };
+      const getPost = async () => {
+        try {
+          const res = await axios.get('api/posts/' + id);
+          setPost(res.data.posts);
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            console.error('No post found');
+          } else {
+            console.error('An error occurred:', error);
+          }
+        }
+      };
+      getUser();
+      getPost();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <div>
       <NavBar />
@@ -162,19 +182,9 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className='flex flex-row justify-center'>
-        <button
-          className='w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]'
-          onClick={() => {
-            navigate('/editprofile');
-          }}
-        >
-          Edit My Profile
-        </button>
-      </div>
       <Footer />
     </div>
   );
 };
 
-export default ProfilePage;
+export default OtherProfilePage;

@@ -50,4 +50,7 @@ router.route('/like/:id').put(likePost);
 
 // http://localhost:3000/api/post/unlike/:id
 router.route('/unlike/:id').put(unlikePost);
+
+//some routes are giving errors
+
 module.exports = router;

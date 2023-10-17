@@ -51,7 +51,7 @@ const NavBar = () => {
             width={50}
             height={50}
             onClick={() => {
-              navigate('/profile');
+              navigate('/myprofile');
             }}
           />
           <button

@@ -12,6 +12,7 @@ import EditPostPage from './components/EditPostPage';
 //testing
 import UploadCard from './components/PostUploadCard';
 import PostDetails from './components/PostDetails';
+import OtherProfilePage from './pages/OtherProfilePage';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
@@ -27,8 +28,8 @@ function App() {
           <Route path='*' element={<Error />} />
           <Route path='/upload' element={<UploadCard />} />
           <Route path='/postdetails/:id' element={<PostDetails />} />
-          <Route path='/profile/:id' element={<ProfilePage />} />
-          <Route path='/profile/' element={<ProfilePage />} />
+          <Route path='/profile/:id' element={<OtherProfilePage />} />
+          <Route path='/myprofile/' element={<ProfilePage />} />
           <Route path='/editprofile' element={<EditProfilePage />} />
           <Route path='/editpost/:id' element={<EditPostPage />} />
         </Routes>
