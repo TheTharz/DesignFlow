@@ -16,10 +16,23 @@ const Homepage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [post, setPost] = useState([]);
+  const categories = [
+    'All',
+    'Art',
+    'Vector',
+    'Design',
+    'Digital',
+    'Illustration',
+    'Photography',
+    'Typography',
+    'website',
+    'UI/UX',
+  ];
   useEffect(() => {
     axios
       .get('http://localhost:3000/api/posts/allposts')
       .then((response) => {
+        setFilteredPosts(response.data.posts);
         setPost(response.data.posts);
         //console.log(response.data.posts);
         setLoading(false);
@@ -60,22 +73,54 @@ const Homepage = () => {
     }
   };
 
+  const [filteredPosts, setFilteredPosts] = useState(post);
+
+  const handleCategoryClick = (category) => {
+    // Filter posts based on the selected category
+    if (category === 'All') {
+      setFilteredPosts(post);
+    } else {
+      setFilteredPosts(post);
+      const filtered = post.filter(
+        (postItem) => postItem.category === category
+      );
+      setFilteredPosts(filtered);
+    }
+  };
+
   return (
     <div className='font-Poppins'>
       <NavBar />
       <Hero />
+      <div className='flex justify-center mt-4'>
+        {categories.map((category) => (
+          <button
+            key={category}
+            className='bg-gray-200 text-black px-4 py-2 mx-2 rounded-full'
+            onClick={() => {
+              console.log('Category button clicked:', category);
+              handleCategoryClick(category);
+            }}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
       {loading ? (
-        <div className='w-full h-[300px] items-center justify-center'>
-          <div class='flex flex-row gap-2 justify-center'>
-            <div class='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]'></div>
-            <div class='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]'></div>
-            <div class='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]'></div>
+        <div className='w-full h-[300px] flex items-center justify-center gap-2'>
+          <p className='text-3xl font-medium'>
+            <span className='text-black'>Loading</span> posts
+          </p>
+          <div class='flex flex-row gap-2 justify-center items-center'>
+            <div class='w-4 h-4 rounded-full bg-black animate-bounce [animation-delay:.7s]'></div>
+            <div class='w-4 h-4 rounded-full bg-black animate-bounce [animation-delay:.3s]'></div>
+            <div class='w-4 h-4 rounded-full bg-black animate-bounce [animation-delay:.7s]'></div>
           </div>
         </div>
       ) : (
         <div className='mt-8 grid grid-cols-4 justify-center animate-fade animate-once'>
-          {Array.isArray(post) && post.length > 0 ? (
-            post.map((postItem) => (
+          {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
+            filteredPosts.map((postItem) => (
               <div key={postItem._id} className='p-2 m-2 cursor-pointer'>
                 {postItem.postImage && (
                   <img
@@ -102,7 +147,9 @@ const Homepage = () => {
               </div>
             ))
           ) : (
-            <p>No posts available</p>
+            <div className='flex flex-row items-center justify-center h-[300px]'>
+              <h1 className='font-medium text-3xl'>No posts available</h1>
+            </div>
           )}
         </div>
       )}
