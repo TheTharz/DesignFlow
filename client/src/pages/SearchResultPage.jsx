@@ -24,6 +24,9 @@ const SearchResultPage = () => {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching search results:', error);
+        if (error.response.status === 401) {
+          navigate('/signin');
+        }
       }
     };
 

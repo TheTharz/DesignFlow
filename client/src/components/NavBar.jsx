@@ -2,11 +2,13 @@ import React from 'react';
 import logoImageOnly from '../assets/logoImageOnly.png';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../context/userContext';
+import PostUploadCard from './PostUploadCard';
 import axios from 'axios';
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
+  const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
   const handleLogOut = () => {
     axios.post('/api/users/logout');
@@ -17,6 +19,19 @@ const NavBar = () => {
   const handleSearch = (e) => {
     navigate('/search/' + search);
   };
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Escape') {
+        setSelected(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
   return (
     <div className='font-Poppins flex flex-row m-2 justify-between items-center'>
       <div
@@ -50,7 +65,7 @@ const NavBar = () => {
           <button
             className='bg-white text-black rounded-lg cursor-pointer m-2 p-2 h-12 text-[12px] font-medium w-[150px] border-2 border-black'
             onClick={() => {
-              navigate('/upload');
+              setSelected(true);
             }}
           >
             Share Your Work +
@@ -95,6 +110,7 @@ const NavBar = () => {
           </button>
         </div>
       )}
+      <div>{selected && <PostUploadCard setSelected={setSelected} />}</div>
     </div>
   );
 };
