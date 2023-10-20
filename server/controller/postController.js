@@ -116,16 +116,22 @@ const getPostById = async (req, res) => {
 // like the post
 const likePost = async (req, res) => {
   const { id } = req.params;
+  console.log(req.cookies);
+  const jwtCookie = req.cookies.jwt;
+  const decoded = jwt.verify(jwtCookie, process.env.SECRET);
+  const { _id } = decoded;
+  console.log(_id);
   try {
-    const post = await Post.findByIdAndUpdate(
-      id,
-      {
-        $push: { likes: req.userId },
-      },
-      {
-        new: true,
-      }
-    );
+    let post = await Post.findById(id);
+    if (!post.likes) {
+      post.likes = [];
+    }
+    if (post.likes && post.likes.includes(_id)) {
+      post.likes.pull(_id);
+    } else {
+      post.likes.push(_id);
+    }
+    post = await post.save();
     return res.status(200).json({ message: 'Post liked successfully', post });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -135,6 +141,7 @@ const likePost = async (req, res) => {
 // unlike the post
 const unlikePost = async (req, res) => {
   const { id } = req.params;
+
   try {
     const post = await Post.findByIdAndUpdate(
       id,

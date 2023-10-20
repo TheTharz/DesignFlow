@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Post = require('../models/Post');
 const {
   hashPassword,
   createToken,
@@ -133,7 +134,10 @@ const getUserProfile = async (req, res) => {
 const deleteUserProfile = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findOneAndDelete(id);
+    const user = await User.findOneAndDelete({ _id: id });
+    //this is last updated point
+    await Post.deleteMany({ owner: id });
+
     if (!user) {
       return res.status(400).json({ message: 'User does not exists' });
     }

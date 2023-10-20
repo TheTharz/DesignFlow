@@ -11,11 +11,12 @@ import {
   TiSocialTwitter,
   TiSocialFacebook,
   TiSocialInstagram,
-  TiSocialPinterest,
 } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import PostDetails from '../components/PostDetails';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+
 const OtherProfilePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -48,8 +49,34 @@ const OtherProfilePage = () => {
       getPost();
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401 || user) {
+        navigate('/signin');
+      }
     }
   }, []);
+
+  const handleLike = async (postItem) => {
+    try {
+      const res = await axios.put('api/posts/like/' + postItem._id);
+      const updatedPost = res.data.post;
+      console.log(res);
+      setPost((prevPosts) =>
+        prevPosts.map((prevPost) =>
+          prevPost._id === postItem._id ? updatedPost : prevPost
+        )
+      );
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 401) {
+        navigate('/signin');
+      }
+    }
+  };
+
+  const isLiked = (postItem) => {
+    return postItem.likes.includes(user._id);
+  };
+
   return (
     <div>
       <NavBar />
@@ -97,10 +124,10 @@ const OtherProfilePage = () => {
           post.map((postItem) => (
             <div
               key={postItem._id}
-              className='p-4 cursor-pointer'
+              className='p-4 cursor-pointer transform transition hover:scale-105'
               onClick={() => {
                 console.log(postItem);
-                setSelectedPost(postItem);
+                setSelectedPost(postItem._id);
               }}
             >
               {postItem.postImage && (
@@ -113,6 +140,21 @@ const OtherProfilePage = () => {
               <div className='flex flex-row justify-between p-4'>
                 <h3 className='text-[16px] font-medium'>{postItem.title}</h3>
                 <p className='mr-8'>{postItem.likes.length}</p>
+                {isLiked(postItem) ? (
+                  <AiFillHeart
+                    size={30}
+                    onClick={() => handleLike(postItem)}
+                    className='inline-block cursor-pointer hover:scale-105'
+                    style={{ transition: 'transform 0.3s' }}
+                  />
+                ) : (
+                  <AiOutlineHeart
+                    size={30}
+                    onClick={() => handleLike(postItem)}
+                    className='inline-block cursor-pointer hover:scale-105'
+                    style={{ transition: 'transform 0.3s' }}
+                  />
+                )}
               </div>
             </div>
           ))

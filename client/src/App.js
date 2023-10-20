@@ -31,7 +31,7 @@ function App() {
           <Route path='/upload' element={<UploadCard />} />
           <Route path='/postdetails/:id' element={<PostDetails />} />
           <Route path='/profile/:id' element={<OtherProfilePage />} />
-          <Route path='/myprofile/' element={<ProfilePage />} />
+          <Route path='/myprofile/:id' element={<ProfilePage />} />
           <Route path='/editprofile' element={<EditProfilePage />} />
           <Route path='/editpost/:id' element={<EditPostPage />} />
           <Route path='/search/:search' element={<SearchResultPage />} />

@@ -14,22 +14,105 @@ import {
 } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import EditPostPage from '../components/EditPostPage';
-
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import toast, { Toaster } from 'react-hot-toast';
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [post, setPost] = useState([]);
   const [selectedPost, setSelectedPost] = useState('');
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const getPost = async () => {
-      //console.log(user._id);
-      const res = await axios.get('api/posts/' + user._id);
-      setPost(res.data.posts);
-    };
-    getPost();
+    try {
+      const getPost = async () => {
+        //console.log(user._id);
+        const res = await axios.get('api/posts/' + user._id);
+        setPost(res.data.posts);
+        console.log(res.data.posts);
+        setLoading(false);
+      };
+      getPost();
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 401) {
+        navigate('/signin');
+      }
+    }
   }, [user._id]);
+
+  const handleLike = async (postItem) => {
+    try {
+      const res = await axios.put('api/posts/like/' + postItem._id);
+      const updatedPost = res.data.post;
+      console.log(res);
+      setPost((prevPosts) =>
+        prevPosts.map((prevPost) =>
+          prevPost._id === postItem._id ? updatedPost : prevPost
+        )
+      );
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 401) {
+        navigate('/signin');
+      }
+    }
+  };
+
+  const isLiked = (postItem) => {
+    return postItem.likes.includes(user._id);
+  };
+
+  const updatePostInProfile = (updatedPost) => {
+    setPost((prevPosts) =>
+      prevPosts.map((prevPost) =>
+        prevPost._id === updatedPost._id ? updatedPost : prevPost
+      )
+    );
+    toast.success('Post updated successfully', {
+      duration: 2000,
+      position: 'top-right',
+    });
+    setSelectedPost('');
+  };
+
+  const deletePostInProfile = (deletePost) => {
+    setPost((prevPosts) =>
+      prevPosts.filter((prevPost) => prevPost._id !== deletePost._id)
+    );
+    toast.success('Post deleted successfully', {
+      duration: 2000,
+      position: 'top-right',
+    });
+    setSelectedPost('');
+  };
+
+  const discard = () => {
+    setSelectedPost('');
+  };
+
+  const deleteProfile = async () => {
+    try {
+      const res = await axios.delete('/api/users/' + user._id);
+      console.log(res);
+      navigate('/signin');
+      setUser(null);
+      toast.success('Profile deleted successfully', {
+        duration: 2000,
+        position: 'top-right',
+      });
+    } catch (e) {
+      console.log(e);
+      if (e.response.status === 401) {
+        navigate('/signin');
+      } else {
+        toast.error('Profile not deleted');
+      }
+    }
+  };
   return (
     <div>
+      <Toaster />
       <NavBar />
       <div className='flex flex-row items-center justify-evenly font-Poppins gap-4'>
         <div className='flex flex-col items-left gap-2 max-w-[500px]'>
@@ -60,10 +143,6 @@ const ProfilePage = () => {
           ) : (
             <img src={user.profilePicture} alt='user' />
           )}
-          <button class='bg-red-950 text-red-400 border border-red-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group w-[200px]'>
-            <span class='bg-red-400 shadow-red-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]'></span>
-            Hire Me
-          </button>
         </div>
       </div>
       <div className='flex flex-col justify-center items-center m-4 p-4 mt-8'>
@@ -71,14 +150,35 @@ const ProfilePage = () => {
         <div className='border-t border-black mt-2 w-[500px]'></div>;
       </div>
       <div className='m-2 grid grid-cols-4 justify-center'>
-        {Array.isArray(post) && post.length > 0 ? (
+        {loading ? (
+          <div className='w-full h-[300px] flex items-center justify-center gap-2'>
+            <p className='text-3xl font-medium'>
+              <span className='text-black'>Loading</span> posts
+            </p>
+            <div className='flex flex-row gap-2 justify-center items-center'>
+              <div
+                className='w-4 h-4 rounded-full bg-black animate-bounce'
+                style={{ animationDelay: '.7s' }}
+              ></div>
+              <div
+                className='w-4 h-4 rounded-full bg-black animate-bounce'
+                style={{ animationDelay: '.3s' }}
+              ></div>
+              <div
+                className='w-4 h-4 rounded-full bg-black animate-bounce'
+                style={{ animationDelay: '.7s' }}
+              ></div>
+            </div>
+          </div>
+        ) : Array.isArray(post) && post.length > 0 ? (
           post.map((postItem) => (
             <div
               key={postItem._id}
               className='p-4 cursor-pointer'
               onClick={() => {
                 console.log(postItem);
-                setSelectedPost(postItem);
+                setSelectedPost(postItem._id);
+                //console.log(selectedPost);
                 //navigate('/editpost/' + postItem._id);
               }}
             >
@@ -92,6 +192,21 @@ const ProfilePage = () => {
               <div className='flex flex-row justify-between p-4'>
                 <h3 className='text-[16px] font-medium'>{postItem.title}</h3>
                 <p className='mr-8'>{postItem.likes.length}</p>
+                {isLiked(postItem) ? (
+                  <AiFillHeart
+                    size={30}
+                    onClick={() => handleLike(postItem)}
+                    className='inline-block cursor-pointer hover:scale-105'
+                    style={{ transition: 'transform 0.3s' }}
+                  />
+                ) : (
+                  <AiOutlineHeart
+                    size={30}
+                    onClick={() => handleLike(postItem)}
+                    className='inline-block cursor-pointer hover:scale-105'
+                    style={{ transition: 'transform 0.3s' }}
+                  />
+                )}
               </div>
             </div>
           ))
@@ -165,7 +280,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className='flex flex-row justify-center'>
+      <div className='flex flex-row justify-center gap-4'>
         <button
           className='w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]'
           onClick={() => {
@@ -174,8 +289,25 @@ const ProfilePage = () => {
         >
           Edit My Profile
         </button>
+        <button
+          className='w-[150px] bg-red-400 h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]'
+          onClick={() => {
+            deleteProfile();
+          }}
+        >
+          Delete My Profile
+        </button>
       </div>
-      <div>{selectedPost && <EditPostPage postId={selectedPost} />}</div>
+      <div>
+        {selectedPost && (
+          <EditPostPage
+            postId={selectedPost}
+            updatePostInProfile={updatePostInProfile}
+            deletePostInProfile={deletePostInProfile}
+            discard={discard}
+          />
+        )}
+      </div>
       <Footer />
     </div>
   );

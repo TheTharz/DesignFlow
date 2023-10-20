@@ -6,15 +6,36 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../context/userContext';
 import PostUploadCard from './PostUploadCard';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
   const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
+
   const handleLogOut = () => {
-    axios.post('/api/users/logout');
-    setUser(null);
-    navigate('/');
+    try {
+      axios.post('/api/users/logout');
+      setUser(null);
+      navigate('/');
+      toast.success('Logged Out Successfully', {
+        duration: 2000,
+        position: 'top-right',
+      });
+
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.message, {
+        duration: 2000,
+        position: 'top-right',
+      });
+      if (error.response.status === 401 || error.response.status === 400) {
+        setUser(null);
+        navigate('/signin');
+      }
+    }
   };
+
   const [search, setSearch] = useState('');
   const handleSearch = (e) => {
     navigate('/search/' + search);
@@ -32,8 +53,17 @@ const NavBar = () => {
     };
   }, []);
 
+  const navigateProfile = () => {
+    if (user) {
+      navigate('/myprofile');
+    } else {
+      navigate('/signin');
+    }
+  };
+
   return (
-    <div className='font-Poppins flex flex-row m-2 justify-between items-center'>
+    <div className='font-Poppins flex flex-row m-2 justify-between items-center w-[85%]'>
+      <Toaster />
       <div
         className='p-2 flex flex-row items-center gap-3'
         onClick={() => {
@@ -43,6 +73,8 @@ const NavBar = () => {
         <img src={logoImageOnly} alt='logo' className='w-12 h-8' />
         <h1 className='text-xl font-semibold'>DesignFlow</h1>
       </div>
+
+      <div className='flex-grow'></div>
 
       <div className='bg-gray-200 rounded-full flex items-center p-2 w-[500px] h-[50px]'>
         <AiOutlineSearch size={25} />
@@ -56,10 +88,20 @@ const NavBar = () => {
             }
           }}
           onChange={(e) => {
-            setSearch(e.target.value);
+            try {
+              setSearch(e.target.value);
+            } catch (error) {
+              toast.error(error.message, {
+                duration: 2000,
+                position: 'top-right',
+              });
+            }
           }}
         />
       </div>
+
+      <div className='flex-grow'></div>
+
       {user ? (
         <div className='flex flex-row items-center gap-5'>
           <button
@@ -78,7 +120,15 @@ const NavBar = () => {
             width={50}
             height={50}
             onClick={() => {
-              navigate('/myprofile');
+              if (user) {
+                navigate('/myprofile/' + user._id);
+              } else {
+                toast.error('Please Log In', {
+                  duration: 2000,
+                  position: 'top-right',
+                });
+                navigate('/signin');
+              }
             }}
           />
           <button

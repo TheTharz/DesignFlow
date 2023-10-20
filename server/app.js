@@ -11,7 +11,7 @@ connectDB();
 //middlewares
 app.use(
   cors({
-    origin: 'http://localhost:3005', // Replace with the allowed origin
+    origin: 'http://localhost:3005',
     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
   })
 );

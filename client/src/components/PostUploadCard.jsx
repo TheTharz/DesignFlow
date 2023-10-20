@@ -73,6 +73,9 @@ const PostUploadCard = ({ setSelected }) => {
                   src={post.postImage}
                   alt='post'
                   class='w-full h-full bg-cover'
+                  width={500}
+                  height={300}
+                  style={{ maxWidth: '500px', maxHeight: '300px' }}
                 />
               </label>
             ) : (

@@ -7,6 +7,7 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        console.log('hello');
         const response = await axios.get('/api/users/profiledata/my');
         setUser(response.data.user);
       } catch (error) {

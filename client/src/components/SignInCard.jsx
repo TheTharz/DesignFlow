@@ -4,6 +4,7 @@ import axios from 'axios';
 import signInValidation from '../constants/singInValidation';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignInCard = () => {
   const { setUser } = useContext(UserContext);
@@ -50,12 +51,17 @@ const SignInCard = () => {
           });
         }
         console.log(e.response.data.message);
+        toast.error(e.response.data.message, {
+          duration: 5000,
+          position: 'top-right',
+        });
       }
     }
   };
 
   return (
     <div className='bg-white h-[700px] w-[500px] rounded-[12px] m-4 p-4 shadow-lg'>
+      <Toaster />
       <p className='text-3xl font-light py-4'>Welcome Back Designer!</p>
       <p className='text-3xl font-normal py-4'>
         Sign in to <br />

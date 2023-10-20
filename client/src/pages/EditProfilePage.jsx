@@ -16,6 +16,7 @@ import {
 import { CgProfile } from 'react-icons/cg';
 import ConvertToBase64 from '../constants/convertToBase64';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
@@ -61,16 +62,26 @@ const EditProfilePage = () => {
       const res = await axios.put('/api/users/' + user._id, edited);
       console.log(res);
       setUser(res.data.user);
+      console.log(res.data.user);
+      toast.success('Profile updated successfully', {
+        duration: 5000,
+        position: 'top-right',
+      });
     } catch (e) {
       console.log(e);
       if (e.code === 401) {
         navigate('/signin');
       }
+      toast.error('Invalid credentials', {
+        duration: 5000,
+        position: 'top-right',
+      });
     }
   };
   return (
     <div>
       <NavBar />
+
       <div>
         <div className='flex flex-row justify-evenly items-center'>
           <div className='flex flex-col items-left gap-3'>

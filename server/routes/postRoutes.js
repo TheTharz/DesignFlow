@@ -50,7 +50,7 @@ router.route('/getbyid/:id').get(getPostById);
 router.route('/like/:id').put(likePost);
 
 // http://localhost:3000/api/post/unlike/:id
-router.route('/unlike/:id').put(unlikePost);
+router.route('/v1/unlike/:id').put(unlikePost);
 
 // http://localhost:3000/api/post/search?keywords=keyword1+keyword2
 router.route('/search/post/search').get(searchPosts);

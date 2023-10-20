@@ -6,7 +6,10 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import PostDetails from '../components/PostDetails';
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
 const SearchResultPage = () => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { search } = useParams();
   const [post, setPost] = useState([]);
@@ -60,6 +63,11 @@ const SearchResultPage = () => {
       }
     }
   };
+
+  const isLiked = (postItem) => {
+    return postItem.likes.includes(user._id);
+  };
+
   return (
     <div className='w-full h-full'>
       <NavBar />
@@ -79,7 +87,10 @@ const SearchResultPage = () => {
         <div className='mt-8 grid grid-cols-4 justify-center animate-fade animate-once'>
           {Array.isArray(post) && post.length > 0 ? (
             post.map((postItem) => (
-              <div key={postItem._id} className='p-2 m-2 cursor-pointer'>
+              <div
+                key={postItem._id}
+                className='p-2 m-2 cursor-pointer hover:scale-105 transform transition'
+              >
                 {postItem.postImage && (
                   <img
                     src={postItem.postImage}
@@ -92,14 +103,21 @@ const SearchResultPage = () => {
                   <h3 className='text-[16px] font-medium'>{postItem.title}</h3>
                   <div>
                     <p className='mr-8'>{postItem.likes.length}</p>
-                    <AiOutlineHeart
-                      className='inline-block cursor-pointer'
-                      onClick={() => handleLike(postItem)}
-                    />
-                    <AiFillHeart
-                      className='inline-block cursor-pointer'
-                      onClick={() => handleUnlike(postItem)}
-                    />
+                    {isLiked(postItem) ? (
+                      <AiFillHeart
+                        size={30}
+                        onClick={() => handleLike(postItem)}
+                        className='inline-block cursor-pointer hover:scale-105'
+                        style={{ transition: 'transform 0.3s' }}
+                      />
+                    ) : (
+                      <AiOutlineHeart
+                        size={30}
+                        onClick={() => handleLike(postItem)}
+                        className='inline-block cursor-pointer hover:scale-105'
+                        style={{ transition: 'transform 0.3s' }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

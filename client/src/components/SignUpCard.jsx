@@ -3,6 +3,7 @@ import { useState } from 'react';
 import signupValidation from '../constants/signUpValidation';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignUpCard = () => {
   const navigate = useNavigate();
@@ -46,6 +47,10 @@ const SignUpCard = () => {
         if (e.response.data.message === 'User already exists') {
           setError({ email: 'User already exists' });
           console.log(e.response.data.message);
+          toast.error(e.response.data.message, {
+            duration: 5000,
+            position: 'top-right',
+          });
         }
       }
     }
@@ -53,6 +58,7 @@ const SignUpCard = () => {
 
   return (
     <div className='bg-white h-[700px] w-[500px] rounded-[12px] m-4 p-4 shadow-lg'>
+      <Toaster />
       <p className='text-3xl font-light py-4'>Welcome!</p>
       <p className='text-3xl font-normal py-4'>
         Sign up to <span className='text-3xl font-semibold'>DesignFlow</span>

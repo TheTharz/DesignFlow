@@ -2,13 +2,18 @@ import React from 'react';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 import { SlSocialDribbble } from 'react-icons/sl';
+import ContactUs from '../additional/ContactUs';
 import {
   TiSocialTwitter,
   TiSocialFacebook,
   TiSocialInstagram,
   TiSocialPinterest,
 } from 'react-icons/ti';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+
 const Footer = () => {
+  const [showContact, setShowContact] = useState(false);
   return (
     <div className='w-full h-[300px] bg-gray-200 flex flex-row justify-between items-center px-8'>
       <div className='px-8'>
@@ -18,7 +23,7 @@ const Footer = () => {
         <div className='flex flex-row gap-8 font-semibold p-4'>
           <Link to='/about'>About</Link>
           <Link to='/services'>Services</Link>
-          <Link to='/contact'>Contact</Link>
+          <p onClick={() => setShowContact(true)}>Contact Us</p>
           <Link to='/privacy'>Privacy</Link>
         </div>
         <div className='flex flex-row gap-3 p-4'>
@@ -36,6 +41,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      {showContact && <ContactUs setShowContact={setShowContact} />}
     </div>
   );
 };
