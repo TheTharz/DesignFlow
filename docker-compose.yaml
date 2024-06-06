@@ -4,8 +4,9 @@ services:
     image: design-flow-client:latest
     ports:
       - '80:80'
+    stdin_open: true
     depends_on:
-      - design-flow-server:latest
+      - design-flow-server
     networks:
       - design-flow
 
