@@ -11,7 +11,7 @@ connectDB();
 //middlewares
 app.use(
   cors({
-    origin: 'http://localhost:3005',
+    origin: 'http://design-flow-frontend:80',
     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
   })
 );
