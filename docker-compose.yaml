@@ -1,0 +1,36 @@
+version: '3'
+services:
+  web:
+    image: design-flow-client:latest
+    ports:
+      - '80:80'
+    depends_on:
+      - design-flow-server:latest
+    networks:
+      - design-flow
+
+  app:
+    image: design-flow-server:latest
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    networks:
+      - design-flow
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - design-flow
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  design-flow:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
