@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM nginx:latest
 WORKDIR /usr/share/nginx/html
-RUN rm -rg ./*
+RUN rm -rf ./*
 COPY --from=build /app/build/ .
 
 ENTRYPOINT [ "nginx","-g","daemon off;"]
