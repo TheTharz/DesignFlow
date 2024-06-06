@@ -1,7 +1,13 @@
-FROM node:latest
+FROM node:latest AS build
 WORKDIR /app
 COPY package*.json /app/
 RUN npm install
 COPY . /app/
-EXPOSE 3005
-CMD ["npm", "start"]
+RUN npm run build
+
+FROM nginx:latest
+WORKDIR /usr/share/nginx/html
+RUN rm -rg ./*
+COPY --from=build /app/build/ .
+
+ENTRYPOINT [ "nginx","-g","daemon off;"]
