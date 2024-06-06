@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web:
+  design-flow-client:
     image: design-flow-client:latest
     ports:
       - '80:80'
@@ -9,7 +9,7 @@ services:
     networks:
       - design-flow
 
-  app:
+  design-flow-server:
     image: design-flow-server:latest
     ports:
       - '3000:3000'
