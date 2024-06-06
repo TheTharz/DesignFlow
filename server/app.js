@@ -11,7 +11,9 @@ connectDB();
 //middlewares
 app.use(
   cors({
-    origin: 'http://design-flow-client:80',
+    // origin: 'http://design-flow-client:80',
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
   })
 );
