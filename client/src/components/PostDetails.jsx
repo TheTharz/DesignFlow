@@ -9,7 +9,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AiOutlineClose } from 'react-icons/ai';

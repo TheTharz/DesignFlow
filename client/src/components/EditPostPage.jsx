@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useContext } from 'react';
-import { UserContext } from '../context/userContext';
 import ConvertToBase64 from '../constants/convertToBase64';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineClose } from 'react-icons/ai';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 const EditPostPage = ({
   postId,
   updatePostInProfile,
@@ -18,7 +14,6 @@ const EditPostPage = ({
   console.log(id);
   const [isCardVisible, setIsCardVisible] = useState(true);
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
   const [post, setPost] = useState({});

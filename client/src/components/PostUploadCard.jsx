@@ -6,7 +6,6 @@ import postValidation from '../constants/postValidation';
 import uploadImage from '../assets/upload.png';
 import { useNavigate } from 'react-router-dom';
 const PostUploadCard = ({ setSelected }) => {
-  const navigate = useNavigate();
   const [post, setPost] = useState({
     title: '',
     description: '',

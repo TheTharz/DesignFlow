@@ -10,7 +10,6 @@ import {
   TiSocialPinterest,
 } from 'react-icons/ti';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 const Footer = () => {
   const [showContact, setShowContact] = useState(false);

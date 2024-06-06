@@ -9,7 +9,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import PostDetails from '../components/PostDetails';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const Homepage = () => {
   const { user } = useContext(UserContext);

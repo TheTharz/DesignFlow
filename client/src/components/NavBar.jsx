@@ -53,13 +53,13 @@ const NavBar = () => {
     };
   }, []);
 
-  const navigateProfile = () => {
-    if (user) {
-      navigate('/myprofile');
-    } else {
-      navigate('/signin');
-    }
-  };
+  // const navigateProfile = () => {
+  //   if (user) {
+  //     navigate('/myprofile');
+  //   } else {
+  //     navigate('/signin');
+  //   }
+  // };
 
   return (
     <div className='font-Poppins flex flex-row m-2 justify-between items-center w-[85%]'>

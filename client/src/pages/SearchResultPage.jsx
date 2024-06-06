@@ -52,17 +52,17 @@ const SearchResultPage = () => {
       }
     }
   };
-  const handleUnlike = async (postItem) => {
-    try {
-      const res = await axios.put('api/posts/unlike/' + postItem._id);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-      if (error.code === 401) {
-        navigate('/signin');
-      }
-    }
-  };
+  // const handleUnlike = async (postItem) => {
+  //   try {
+  //     const res = await axios.put('api/posts/unlike/' + postItem._id);
+  //     console.log(res);
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.code === 401) {
+  //       navigate('/signin');
+  //     }
+  //   }
+  // };
 
   const isLiked = (postItem) => {
     return postItem.likes.includes(user._id);
