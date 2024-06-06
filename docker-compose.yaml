@@ -1,16 +1,16 @@
 version: '3'
 services:
-  design-flow-client:
+  client:
     image: client:latest
     ports:
       - '3005:3005'
     stdin_open: true
     depends_on:
-      - design-flow-server
+      - server
     networks:
       - design-flow
 
-  design-flow-server:
+  server:
     image: server:latest
     ports:
       - '3000:3000'
