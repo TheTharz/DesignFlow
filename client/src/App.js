@@ -15,7 +15,7 @@ import UploadCard from './components/PostUploadCard';
 import PostDetails from './components/PostDetails';
 import OtherProfilePage from './pages/OtherProfilePage';
 
-axios.defaults.baseURL = 'http://server:3000/';
+axios.defaults.baseURL = 'http://server:5000/';
 axios.defaults.withCredentials = true;
 
 function App() {
