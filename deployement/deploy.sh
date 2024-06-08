@@ -3,11 +3,11 @@
 set -e
 
 # Define variables
-SECRET_FILE="secret.yml"
-MONGO_CONFIG_FILE="mongo-config.yml"
-MONGO_DEPLOYMENT_FILE="mongo-deployment.yml"
-SERVER_DEPLOYMENT_FILE="server-deployment.yml"
-CLIENT_DEPLOYMENT_FILE="client-deployment.yml"
+SECRET_FILE="secret.yaml"
+MONGO_CONFIG_FILE="mongo-config.yaml"
+MONGO_DEPLOYMENT_FILE="mongo-deployment.yaml"
+SERVER_DEPLOYMENT_FILE="server-deployment.yaml"
+CLIENT_DEPLOYMENT_FILE="client-deployment.yaml"
 
 # Display current pod and service status
 echo "Current Pods:"
