@@ -15,7 +15,7 @@ import UploadCard from './components/PostUploadCard';
 import PostDetails from './components/PostDetails';
 import OtherProfilePage from './pages/OtherProfilePage';
 
-axios.defaults.baseURL = 'http://serverservice.default.svc.cluster.local:5000/';
+axios.defaults.baseURL = 'http://localhost:5000/';
 axios.defaults.withCredentials = true;
 
 function App() {
