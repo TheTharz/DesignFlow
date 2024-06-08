@@ -32,7 +32,7 @@ const Homepage = () => {
   ];
   useEffect(() => {
     axios
-      .get('http://100.25.138.115:5000/api/posts/allposts')
+      .get('/api/posts/allposts')
       .then((response) => {
         setFilteredPosts(response.data.posts);
         setPost(response.data.posts);

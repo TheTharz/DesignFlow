@@ -114,7 +114,7 @@ const NavBar = () => {
           </button>
 
           <img
-            src={user.profilePicture}
+            src={user?.profilePicture}
             alt='profile'
             className='rounded-[25px] cursor-pointer'
             width={50}

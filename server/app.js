@@ -9,14 +9,16 @@ const bodyParser = require('body-parser');
 //database
 connectDB();
 //middlewares
-app.use(
-  cors({
-    // origin: 'http://design-flow-client:80',
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // Enable credentials (cookies, authorization headers, etc.)
-  })
-);
+// app.use(
+//   cors({
+//     // origin: 'http://design-flow-client:80',
+//     origin: '*',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+//   })
+// );
+
+app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
 app.use(express.json());
