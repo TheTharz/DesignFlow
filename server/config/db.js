@@ -3,10 +3,19 @@ const dotenv = require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect('mongodb://mongo:27017/designflow');
-    console.log(`Mongo DB connected ${conn.connection.host}`);
+    // Use environment variables for MongoDB connection
+    const username = process.env.MONGO_INITDB_ROOT_USERNAME;
+    const password = process.env.MONGO_INITDB_ROOT_PASSWORD;
+    const dbUrl = `mongodb://${username}:${password}@mongo:27017/designflow`;
+
+    const conn = await mongoose.connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log(`Error connecting to mongo DB : ${error.message}`);
+    console.error(`Error connecting to MongoDB: ${error.message}`);
     process.exit(1);
   }
 };
