@@ -2,21 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: client
+    role: client
+    env: demo
   name: client
 spec:
   replicas: 1
+  strategy:
+    type: RollongUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   selector:
     matchLabels:
-      app: client
+      role: client
   template:
     metadata:
       labels:
-        app: client
+        role: client
     spec:
       containers:
-        - image: thetharz/design-flow-client:latest
-          name: client
+        - name: client
+          image: thetharz/design-flow-client:latest
+          imagePullPolicy: Always
+          env:
+            - name: REACT_APP_BACKEND_URL
+              value: 'server:5000'
           ports:
             - containerPort: 3000
 
@@ -27,9 +37,10 @@ metadata:
   name: clientservice
 spec:
   selector:
-    app: client
+    role: client
   type: NodePort
   ports:
     - port: 3000
       targetPort: 3000
       nodePort: 30100
+      protocol: TCP

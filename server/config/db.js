@@ -3,20 +3,22 @@ const dotenv = require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    // Use environment variables for MongoDB connection
-    const username = process.env.MONGO_INITDB_ROOT_USERNAME;
-    const password = process.env.MONGO_INITDB_ROOT_PASSWORD;
-    const dbUrl = `mongodb://${username}:${password}@mongo:27017/designflow`;
-
-    const conn = await mongoose.connect(dbUrl, {
+    const connectionParams = {
+      // user: process.env.MONGO_USERNAME,
+      // pass: process.env.MONGO_PASSWORD,
       useNewUrlParser: true,
+      // useCreateIndex: true,
       useUnifiedTopology: true,
-    });
-
-    console.log(`MongoDB connected: ${conn.connection.host}`);
+    };
+    const useDBAuth = process.env.USE_DB_AUTH || false;
+    if (useDBAuth) {
+      connectionParams.user = process.env.MONGO_USERNAME;
+      connectionParams.pass = process.env.MONGO_PASSWORD;
+    }
+    await mongoose.connect(process.env.MONGO_CONN_STR, connectionParams);
+    console.log('Connected to database.');
   } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
+    console.log('Could not connect to database.', error);
   }
 };
 
