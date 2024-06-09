@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: REACT_APP_BACKEND_URL
-              value: 'server:5000'
+              value: 'serverservice:5000'
           ports:
             - containerPort: 3000
 
