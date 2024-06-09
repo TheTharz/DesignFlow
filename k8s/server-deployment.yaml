@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: server
   labels:
+    app: server
     role: server
     env: demo
 spec:
@@ -15,10 +16,14 @@ spec:
   selector:
     matchLabels:
       app: server
+      role: server
+      env: demo
   template:
     metadata:
       labels:
+        app: server
         role: server
+        env: demo
     spec:
       containers:
         - name: server
@@ -60,7 +65,9 @@ metadata:
   name: serverservice
 spec:
   selector:
+    app: server
     role: server
+    env: demo
   type: ClusterIP
   ports:
     - port: 5000
