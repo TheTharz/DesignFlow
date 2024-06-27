@@ -45,5 +45,12 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup Local Images') {
+            steps {
+                sh "docker rmi ${DOCKER_USERNAME}/designflow-ci-client:v${BUILD_NUMBER}"
+                sh "docker rmi ${DOCKER_USERNAME}/designflow-ci-server:v${BUILD_NUMBER}"
+                
+            }
+        }
     }
 }
