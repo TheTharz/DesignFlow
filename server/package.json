@@ -8,6 +8,20 @@
     "test": "jest",
     "start": "nodemon index.js"
   },
+  "jest": {
+    "coverageReporters": [
+      "text",
+      "html"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "output": "junit.xml",
+    "usePathForSuiteName": "true"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
