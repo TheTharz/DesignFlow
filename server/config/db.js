@@ -10,12 +10,10 @@ const connectDB = async () => {
       // useCreateIndex: true,
       useUnifiedTopology: true,
     };
-    const useDBAuth = process.env.USE_DB_AUTH || false;
-    if (useDBAuth) {
-      connectionParams.user = process.env.MONGO_USERNAME;
-      connectionParams.pass = process.env.MONGO_PASSWORD;
-    }
-    await mongoose.connect(process.env.MONGO_CONN_STR, connectionParams);
+    await mongoose.connect(
+      'mongodb+srv://tharinduimalka915:4X5cctWukYFIz9qT@cluster0.cipfkdt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+      connectionParams
+    );
     console.log('Connected to database.');
   } catch (error) {
     console.log('Could not connect to database.', error);
