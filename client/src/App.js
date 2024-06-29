@@ -14,8 +14,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import UploadCard from './components/PostUploadCard';
 import PostDetails from './components/PostDetails';
 import OtherProfilePage from './pages/OtherProfilePage';
-
-axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+axios.defaults.baseURL = 'http://3.90.81.108:5000/';
 axios.defaults.withCredentials = true;
 
 function App() {
